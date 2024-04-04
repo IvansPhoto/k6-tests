@@ -1,0 +1,10 @@
+services:
+  flask-api: 
+    build:
+      context: app
+      target: builder
+    stop_signal: SIGINT
+    ports:
+      - '8000:8000'
+    mem_limit: 1G
+    cpus: 1

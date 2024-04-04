@@ -7,9 +7,11 @@ export let options: Options = {
         {duration: '5s', target: 50},
         {duration: '10s', target: 500},
         {duration: '10s', target: 1500},
+        {duration: '10s', target: 3000},
     ],
     thresholds: {
-        http_req_duration: ['med < 100']
+        http_req_failed: [{threshold: 'rate<0.01', abortOnFail: true, delayAbortEval: "3s"}],
+        http_req_duration: [{threshold: 'med < 500', abortOnFail: true, delayAbortEval: "3s"}]
     },
 };
 

@@ -3,17 +3,23 @@ import {Options} from 'k6/options';
 import http from 'k6/http';
 
 export let options: Options = {
-    stages: [
-        {duration: '5s', target: 50},
-        {duration: '15s', target: 500},
-        {duration: '10s', target: 1500},
-    ],
+    scenarios: {
+        low: {
+            executor: 'constant-arrival-rate',
+            rate: 350, // number of constant iterations given `timeUnit`
+            duration: '30s', // total duration
+            preAllocatedVUs: 100, // to allocate runtime resources     preAll
+            maxVUs: 3000,
+            timeUnit: '1s',
+        }
+    },
     thresholds: {
-        http_req_duration: ['med < 500']
+        http_req_failed: [{threshold: 'rate<0.01', abortOnFail: true, delayAbortEval: "3s"}],
+        http_req_duration: [{threshold: 'med < 100', abortOnFail: true, delayAbortEval: "3s"}]
     },
 };
 
 export default () => {
     http.get('http://127.0.0.1:8000/index');
-    sleep(1);
+    sleep(Math.random() * 5);
 };

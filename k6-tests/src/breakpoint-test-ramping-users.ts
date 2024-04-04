@@ -5,10 +5,12 @@ import http, {RefinedResponse, ResponseType} from 'k6/http';
 export let options: Options = {
     scenarios: {
         main: {
-            executor: 'ramping-arrival-rate',
-            preAllocatedVUs: 100,
-            maxVUs: 5000,
+            executor: 'ramping-vus',
+            startVUs: 100,
             stages: [
+                {duration: '1m', target: 250},
+                {duration: '1m', target: 1000},
+                {duration: '1m', target: 2000},
                 {duration: '1m', target: 3000},
             ]
         }
